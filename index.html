@@ -11,18 +11,36 @@
   <meta property="og:description" content="The home of Pablo Puyat, web developer">
   <meta property="og:url" content="/index.html">
   <meta property="og:site_name" content="ligaw.dev">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
   <style>
-    html, body, a {
+    html, body {
       background-color: #180304;
       color: #FAFAFA;
+      font: 28px/130% 'Barlow', sans-serif;
+    }
+    a {
+      color: #D1CDCD;
+      text-underline-offset: 0.3rem;
+    }
+    h1 {
+     font: 28px/130% 'Barlow', sans-serif;
     }
     main {
       max-width: 80rem;
       margin: 0 auto;
       padding: 0 6rem;
     }
+    section {
+      margin-top: 6rem;
+    }
     ul {
+      padding: 0;
       list-style-type: none;
+    }
+    li {
+      margin-bottom: 0.5rem;
     }
   </style>
 </head>
@@ -44,10 +62,10 @@
     </section>
 
     <section>
-      <h2>Projects</h2>
+      <h1>Projects</h1>
       <ul>
-        <li><a href="https://cbrz.app">CBRZ</a> - web app, digital comic reader, not yet launched</li>
-        <li><a href="https://opdb.hindipa.dev">Deck Builder for One Piece TCG</a> - web app, trade card game deck database, still in development</li>
+        <li><a href="https://cbrz.app">CBRZ</a> - digital comic reader</li>
+        <li><a href="https://opdb.hindipa.dev">Deck Builder for One Piece TCG</a> - card game database</li>
       </ul>
     </section>
   </main>
