@@ -3,17 +3,17 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 ">
     <url>
         <loc>https://ligaw.dev</loc>
-        <lastmod>2023-12-15</lastmod>
+        <lastmod>2023-12-25</lastmod>
         <changefreq>weekly</changefreq>
     </url>
     <url>
         <loc>https://ligaw.dev/the-practicality-of-web-development.html</loc>
-        <lastmod>2023-12-20</lastmod>
-        <changefreq>yearly</changefreq>
+        <lastmod>2023-12-25</lastmod>
+        <changefreq>weekly</changefreq>
     </url>
     <url>
         <loc>https://ligaw.dev/streamlining-with-monorepo.html</loc>
-        <lastmod>2023-12-18</lastmod>
+        <lastmod>2023-12-25</lastmod>
         <changefreq>weekly</changefreq>
     </url>
 </urlset>
