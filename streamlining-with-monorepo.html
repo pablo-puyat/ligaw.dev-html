@@ -1,93 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <title>Practical Web Development - Streamlining with Monorepo | Pablo Puyat</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="author" content="Pablo Puyat">
-  <meta name="description"
-    content="Discover how an expert web developer can streamline your project using a monorepo approach. Specializing in Svelte and Laravel for efficient web solutions." />
-  <meta name="keywords"
-    content="hire web developer, expert web developer, Svelte developer, Laravel developer, monorepo web development, efficient web solutions, web development services" />
-  <link rel="canonical" href="https://ligaw.dev/streamlining-with-monorepo.html" />
-  <meta property="og:title" content="Hire Expert Web Developer for Your Project - Streamlining with Monorepo" />
-  <meta property="og:description"
-    content="Looking to hire a web developer? Discover how monorepo can bring efficiency to your project. Specializing in Svelte and Laravel development." />
-  <meta property="og:image" content="URL_to_image_representing_the_blog_post" />
-  <meta property="og:url" content="https://ligaw.dev/streamlining-with-monorepo.html">
-  <meta property="og:type" content="article" />
-  <meta property="og:site_name" content="Ligaw Developer" />
-  <style>
-    html,
-    body {
-      background-color: #180304;
-      color: #FAFAFA;
-      font: 28px/130% 'Barlow', sans-serif;
-    }
+    <title>Practical Web Development - Streamlining with Monorepo | Pablo Puyat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Pablo Puyat">
+    <meta name="description" content="Discover how an expert web developer can streamline your project using a monorepo approach. Specializing in Svelte and Laravel for efficient web solutions." />
+    <meta name="keywords" content="hire web developer, expert web developer, Svelte developer, Laravel developer, monorepo web development, efficient web solutions, web development services" />
+    <link rel="canonical" href="https://ligaw.dev/streamlining-with-monorepo.html" />
+    <meta property="og:title" content="Hire Expert Web Developer for Your Project - Streamlining with Monorepo" />
+    <meta property="og:description" content="Looking to hire a web developer? Discover how monorepo can bring efficiency to your project. Specializing in Svelte and Laravel development." />
+    <meta property="og:image" content="URL_to_image_representing_the_blog_post" />
+    <meta property="og:url" content="https://ligaw.dev/streamlining-with-monorepo.html">
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Ligaw Developer" />
+    <style>
+        html,
+        body {
+            background-color: rgb(219, 218, 234);
+            color: rgb(57, 47, 90);
+            font: 19px/130% sans-serif;
+        }
 
-    a {
-      color: #D1CDCD;
-      text-underline-offset: 0.3rem;
-    }
+        a {
+            color: rgb(57, 47, 90);
+            text-underline-offset: 0.3rem;
+        }
 
-    h1,
-    h2,
-    h3 {
-      font: 28px/130% sans-serif;
-    }
+        h1 {
+            font: 27px/120% sans-serif;
+        }
 
-    main {
-      max-width: 80rem;
-      margin: 0 auto;
-      padding: 0 6rem;
-    }
+        header,
+        main {
+            margin: 0 auto;
+            padding: 0 1rem;
+            max-width: 20rem;
+        }
 
-    section {
-      margin-top: 6rem;
-    }
+        section,
+        header {
+            margin-top: 1rem;
+        }
 
-    ul {
-      padding: 0;
-      list-style-type: none;
-    }
+        ul {
+            padding: 0;
+            list-style-type: none;
+        }
 
-    li {
-      margin-bottom: 0.5rem;
-    }
-  </style>
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        @media only screen and (min-width: 600px) {
+            header,
+            main {
+                max-width: 31rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <main>
-    <h1>Streamlining Web Development: My Journey to a Monorepo Structure"</h1>
+<header>
+    <nav>
+        <a href="/">Back</a>
+    </nav>
+</header>
+<main>
+    <h1>Streamlining Web Development: My Journey to a Monorepo Structure</h1>
 
     <p>As a solo web developer, managing the complexities of multiple repositories for a single web application project
-      can be daunting. My recent project – a robust web application requiring a WebAssembly (WASM) module, dynamic
-      landing pages, and a REST backend – presented me with a significant challenge in terms of manageability. This led
-      me to explore the world of monorepos, a journey I embarked on to streamline my development process.</p>
+        can be daunting. My recent project – a robust web application requiring a WebAssembly (WASM) module, dynamic
+        landing pages, and a REST backend – presented me with a significant challenge in terms of manageability. This led
+        me to explore the world of monorepos, a journey I embarked on to streamline my development process.</p>
 
     <h3>The Decision to Switch to a Monorepo</h3>
 
     <p>In the past, juggling multiple code repositories for different segments of the project was becoming increasingly
-      cumbersome. The main components of my project included a web application and landing pages, both developed using
-      Svelte, along with a separate REST backend. The redundancy in handling similar structures across repositories
-      prompted me to seek a simpler, more efficient approach.</p>
+        cumbersome. The main components of my project included a web application and landing pages, both developed using
+        Svelte, along with a separate REST backend. The redundancy in handling similar structures across repositories
+        prompted me to seek a simpler, more efficient approach.</p>
 
     <h3>Choosing the Right Tool: npm Workspaces</h3>
 
     <p>After weighing my options, I chose to implement my monorepo using npm Workspaces. While Yarn was also a
-      contender, my familiarity with npm and its straightforward integration with my existing workflow made it the ideal
-      choice. I was aware of other tools like DX and Narwhal, but I found that they added unnecessary complexity,
-      whereas my priority was simplicity.</p>
+        contender, my familiarity with npm and its straightforward integration with my existing workflow made it the ideal
+        choice. I was aware of other tools like DX and Narwhal, but I found that they added unnecessary complexity,
+        whereas my priority was simplicity.</p>
 
     <h2>Transitioning to a Monorepo: A Step-by-Step Guide</h2>
 
     <h3>1. Preparing the Existing Repository:</h3>
 
     <p>I started by creating a new branch in my existing repository to retain my code history.
-      I moved my existing code, including package.json and various configuration files, into a subfolder within the
-      project.</p>p
+        I moved my existing code, including package.json and various configuration files, into a subfolder within the
+        project.</p>p
     Code Snippet: Initial Setup
 
     <h3>2. Configuring npm Workspaces:</h3>
@@ -98,13 +106,13 @@
     <h3>3. Streamlining Dependencies and Scripts:</h3>
 
     <p>Next, I shifted shared dependencies and scripts from my web application's package.json to the root package.json.
-      This involved modifying the scripts to function correctly within the new structure.</p>
+        This involved modifying the scripts to function correctly within the new structure.</p>
     Code Snippet: Dependency and Script Migration
 
     <h3>4. Adding the Second Workspace:</h3>
 
     <p>For the landing pages, I added a second entry to the root package.json and set up a corresponding subfolder.
-      I used SvelteKit for these static HTML pages, inheriting shared dependencies from the root.</p>
+        I used SvelteKit for these static HTML pages, inheriting shared dependencies from the root.</p>
 
     <h3>5. Implementing Landing Pages:</h3>
 
@@ -113,19 +121,16 @@
     <h2>Conclusion: Embracing the Monorepo</h2>
 
     <p>The switch to a monorepo has significantly simplified my workflow. Not only has it made my codebase more
-      manageable, but it has also allowed me to maintain a cleaner, more organized structure. As I continue to work with
-      this setup, the benefits of a monorepo in terms of efficiency and manageability are increasingly apparent.</p>
+        manageable, but it has also allowed me to maintain a cleaner, more organized structure. As I continue to work with
+        this setup, the benefits of a monorepo in terms of efficiency and manageability are increasingly apparent.</p>
 
     <p>For fellow developers considering this transition, I can confidently say that the journey to a monorepo, though
-      initially daunting, is well worth the effort for the simplicity and coherence it brings to your projects.</p>
-
-    <h2>About the Author</h2>
-
-    <p>As an independent web developer specializing in creating dynamic and efficient web solutions, I am always on the
-      lookout for ways to optimize my workflow and deliver top-tier results for my clients. If you're seeking a
-      developer who combines technical expertise with a practical, streamlined approach, feel free to reach out for your
-      next project.</p>
-  </main>
+        initially daunting, is well worth the effort for the simplicity and coherence it brings to your projects.</p>
+</main>
+<footer>
+    <nav>
+        <a href="/">Back</a>
+    </nav>
+</footer>
 </body>
-
 </html>
