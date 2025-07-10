@@ -3,11 +3,27 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 ">
     <url>
         <loc>https://ligaw.dev</loc>
+        <lastmod>2025-07-10</lastmod>
+        <priority>1.0</priority>
     </url>
     <url>
         <loc>https://ligaw.dev/the-practicality-of-web-development.html</loc>
+        <lastmod>2024-12-14</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://ligaw.dev/streamlining-with-monorepo.html</loc>
+        <lastmod>2024-12-104/lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://ligaw.dev/my-workflow.html</loc>
+        <lastmod>2025-07-10</lastmod>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://ligaw.dev/how-i-setup-sentry-releases.html</loc>
+        <lastmod>2025-07-10</lastmod>
+        <priority>0.8</priority>
     </url>
 </urlset>

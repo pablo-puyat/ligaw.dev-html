@@ -7,104 +7,38 @@
     <meta name="author" content="Pablo Puyat" />
     <meta
       name="description"
-      content="Home page for Pablo Puyat - web developer"
+      content="Experienced full-stack web developer specializing in SvelteKit, Laravel, and modern web technologies. Portfolio and articles by Pablo Puyat."
     />
-    <meta property="og:title" content="A Web Developer" />
+    <meta name="keywords" content="Pablo Puyat, web developer, full-stack developer, SvelteKit, Laravel, Tailwind CSS, web development portfolio" />
+    <meta property="og:title" content="Pablo Puyat - Full-Stack Web Developer" />
     <meta
       property="og:description"
-      content="The home of Pablo Puyat, web developer"
+      content="Experienced full-stack web developer specializing in SvelteKit, Laravel, and modern web technologies. Portfolio and articles by Pablo Puyat."
     />
     <meta property="og:url" content="/index.html" />
     <meta property="og:site_name" content="ligaw.dev" />
+    <meta property="og:image" content="https://ligaw.dev/pablopuyat.webp" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Pablo Puyat - Full-Stack Web Developer" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <link rel="canonical" href="https://ligaw.dev" />
-    <style>
-      html,
-      body {
-        background-color: rgb(219, 218, 234);
-        color: rgb(57, 47, 90);
-        font: 19px/130% sans-serif;
-      }
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Pablo Puyat",
+      "jobTitle": "Full-Stack Web Developer",
+      "url": "https://ligaw.dev",
+      "description": "Experienced full-stack web developer specializing in SvelteKit, Laravel, and modern web technologies"
+    }
+    </script>
 
-      a {
-        color: rgb(57, 47, 90);
-        text-underline-offset: 0.3rem;
-      }
-
-      h1 {
-        font: 27px/120% sans-serif;
-        font-weight: bold;
-      }
-
-      header,
-      main {
-        margin: 0 auto;
-        padding: 0 1rem;
-        max-width: 20rem;
-      }
-
-      section,
-      header {
-        margin-top: 1rem;
-        margin-bottom: 3rem;
-      }
-
-      ul {
-        padding: 0;
-        list-style-type: none;
-      }
-
-      li {
-        margin-bottom: 0.5rem;
-      }
-
-      #head-shot {
-        border-radius: 50%;
-        border: 2px solid #000000;
-        max-width: 5rem;
-        max-height: 5rem;
-        overflow: hidden;
-        background: linear-gradient(-45deg, #392f5a, #7f7eff, #392f5a) 0 0;
-        background-size: 300% 300%;
-        animation: gradient 12s 3s ease infinite;
-      }
-
-      #head-shot img {
-        max-width: 6rem;
-      }
-
-      @keyframes gradient {
-        0% {
-          background-position: 0 0;
-        }
-        40% {
-          background-position: 50% 50%;
-        }
-        70% {
-          background-position: 0 100%;
-        }
-        100% {
-          background-position: 0 0;
-        }
-      }
-
-      @media only screen and (min-width: 600px) {
-        header,
-        main {
-          max-width: 31rem;
-        }
-      }
-    </style>
   </head>
 
   <body>
-    <header>
-      <div id="head-shot">
-        <img
-          src="pablopuyat@1.webp"
-          alt="Illustrated head shot of Pablo Puyat"
-        />
-      </div>
-    </header>
     <main>
       <section>
         <h1>Experienced Full-Stack Web Developer</h1>
@@ -126,8 +60,15 @@
       </section>
 
       <section>
-        <h1>Projects</h1>
+        <h2>Projects</h2>
         <ul>
+          <li>
+            <ul>
+              <li>Name: <a href="https://maraming.ph" target="_blank">maraming.ph</a></li>
+              <li>Description: the best ever digital media sharing platform</li>
+              <li>Developed using: SvelteKit, Svelte, Tailwind CSS, Laravel</li>
+            </ul>
+          </li>
           <li>
             <ul>
               <li>Name: <a href="https://cbrz.hindipa.dev" target="_blank">Cbrz.app</a></li>
@@ -139,17 +80,19 @@
       </section>
 
       <section>
-        <h1>Thoughts and Notes</h1>
+        <h2>Thoughts and Notes</h2>
         <ul>
           <li>
-            <a href="the-practicality-of-web-development.html"
-              >The Practicality of Web Development</a
-            >
+            <a href="my-workflow.html">My Workflow</a>
           </li>
           <li>
-            <a href="streamlining-with-monorepo.html"
-              >Making My Project Easier to Maintain with a Monorepo</a
-            >
+            <a href="how-i-setup-sentry-releases.html">How I Set Up Sentry Release Tagging</a>
+          </li>
+          <li>
+            <a href="the-practicality-of-web-development.html">The Practicality of Web Development</a>
+          </li>
+          <li>
+            <a href="streamlining-with-monorepo.html">Making My Project Easier to Maintain with a Monorepo</a>
           </li>
         </ul>
       </section>
