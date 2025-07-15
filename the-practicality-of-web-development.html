@@ -24,51 +24,6 @@
     <meta property="article:tag" content="Angular" />
     <meta property="article:tag" content="Vue" />
     <link rel="stylesheet" href="styles.css" />
-    <style>
-        html,
-        body {
-            background-color: rgb(219, 218, 234);
-            color: rgb(57, 47, 90);
-            font: 19px/130% sans-serif;
-        }
-
-        a {
-            color: rgb(57, 47, 90);
-            text-underline-offset: 0.3rem;
-        }
-
-        h1 {
-            font: 27px/120% sans-serif;
-        }
-
-        header,
-        main {
-            margin: 0 auto;
-            padding: 0 1rem;
-            max-width: 20rem;
-        }
-
-        section,
-        header {
-            margin-top: 1rem;
-        }
-
-        ul {
-            padding: 0;
-            list-style-type: none;
-        }
-
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        @media only screen and (min-width: 600px) {
-            header,
-            main {
-                max-width: 31rem;
-            }
-        }
-    </style>
 </head>
 <body>
 <header>
@@ -77,224 +32,43 @@
     </nav>
 </header>
 <main>
-Building a Production-Ready Monitoring Stack for Modern Web Applications
-Before launching a new project, I make it a priority to have a robust monitoring system in place. When an issue arises, having access to searchable logs, historical metrics, and resource usage data is essential for effective troubleshooting. For my latest project, I made a conscious decision to use a dedicated server instead of a major cloud provider like AWS or GCP, primarily for financial reasons. This approach meant I wouldn't have access to managed monitoring tools. With third-party services outside my budget, I set out to engineer a cost-effective and budget-friendly replacement. A key requirement was implementing secure monitoring from the ground up, ensuring all endpoints were protected. This document details the architecture and implementation of the powerful, self-hosted observability stack I built.
+    <h1>Embracing Practicality in Web Development</h1>
+    <p>As a full-time web developer with over a decade of experience, I've navigated the tech world without a
+        traditional academic backbone in computer science. Interestingly, this journey has taught me that being a
+        productive web developer is akin to being a skilled tradesperson – be it a mechanic, a carpenter, or a plumber.
+        It's less about academic theories and more about practical, hands-on skills that solve real-world problems.</p>
 
-System Architecture for Resilient Monitoring
-A fundamental principle of system reliability is to ensure that the monitoring infrastructure is physically and logically isolated from the production environment. A monitoring system that fails alongside the application it's meant to observe is of no use.
+    <h3>The Power of Existing Tools</h3>
+    <p>One of the earliest and most valuable lessons I've learned is the importance of not reinventing the wheel. In
+        nearly every project, it's more efficient and effective to utilize existing libraries or frameworks. Sure, I can't
+        create a complex framework like Angular or Vue from scratch, but I can wield these powerful tools with precision
+        to build robust web applications. This approach is not just about ease; it's about smart work, leveraging the
+        collective knowledge and efforts of the developer community to achieve greater results.</p>
 
-This architecture is therefore based on a two-server model to guarantee fault tolerance:
+    <h3>The Misconception About Algorithms</h3>
+    <p>During interviews, a common hurdle I encounter is questions about algorithms. While algorithms are fundamental in
+        computer science, my decade-long career stands as a testament to the fact that one doesn't need to be an algorithm
+        expert to be a successful web developer. This is where my path diverges from the conventional academic route, yet
+        it converges on efficiency and practicality in the professional realm.</p>
 
-The Production Server: This machine is dedicated to running the core application. It is instrumented with lightweight, efficient data shippers that export telemetry with minimal performance overhead.
+    <h3>The Real Essence of Web Development</h3>
+    <p>What my experience underscores is a critical aspect of web development – it's a field that thrives on practical
+        skills, resourcefulness, and the effective application of existing tools. Not having an extensive background in
+        algorithms or lacking a university degree doesn't make me any less competent as a web developer. Instead, it
+        highlights my ability to adapt, learn, and apply the vast array of resources available.</p>
 
-The Monitoring Server: This is a dedicated machine that runs the core data aggregation, storage, and visualization stack.
+    <h3>Bridging the Gap in Interviews</h3>
+    <p>In interviews, when algorithms come up, I pivot the conversation to my strengths – focusing on practical
+        problem-solving skills and my proficiency in utilizing contemporary technologies like Angular or Vue. This
+        approach underlines a critical skill in software development: the ability to deliver functional, well-designed
+        solutions using the best tools available.</p>
 
-For the monitoring server, I selected a small cloud VPS from a provider like Linode or DigitalOcean. This approach provides a highly available, professionally managed environment that avoids the unreliability of residential ISPs and power, while remaining exceptionally cost-effective. This architecture not only ensures robust monitoring for the current project but also establishes a scalable foundation that could be extended to monitor a fleet of services or even evolve into a managed monitoring solution.
-
-Part 1: Deploying the Core Monitoring Stack
-The monitoring server is the centralized hub of the operation. After provisioning a small VM, I installed Docker and Docker Compose and deployed the core stack using the following configuration.
-
-docker-compose.yml for the Monitoring Server
-
-This file orchestrates the primary services: Grafana for data visualization, Loki for log aggregation, Prometheus for time-series metrics, and Uptime Kuma for external uptime checks.
-
-version: "3.8"
-
-services:
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    volumes:
-      - grafana-data:/var/lib/grafana
-    restart: unless-stopped
-
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
-    command: -config.file=/etc/loki/local-config.yaml
-    ports:
-      - "3100:3100"
-    restart: unless-stopped
-
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus:/etc/prometheus
-      - prometheus-data:/prometheus
-    command: --config.file=/etc/prometheus/prometheus.yml
-    restart: unless-stopped
-
-  uptime-kuma:
-    image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
-    ports:
-      - "3001:3001"
-    volumes:
-      - uptime-kuma-data:/app/data
-    restart: unless-stopped
-
-volumes:
-  grafana-data: {}
-  prometheus-data: {}
-  uptime-kuma-data: {}
-
-Prometheus Configuration
-
-I created a prometheus directory containing a prometheus.yml file to define the scrape targets on the production server.
-
-# ./prometheus/prometheus.yml
-global:
-  scrape_interval: 15s
-
-scrape_configs:
-  - job_name: 'node-exporter'
-    static_configs:
-      - targets: ['<PRODUCTION_SERVER_IP>:9100']
-  - job_name: 'cadvisor'
-    static_configs:
-      - targets: ['<PRODUCTION_SERVER_IP>:8085']
-
-With a docker-compose up -d, the monitoring server was operational.
-
-Part 2: Instrumenting the Production Server
-On the production server, I deployed a lean Docker Compose configuration containing only the necessary data shippers.
-
-Node Exporter: Exposes host-level system metrics.
-
-cAdvisor: Exposes container-level performance metrics.
-
-Promtail: The log collection agent that forwards container and system logs to Loki.
-
-docker-compose.yml for the Production Server
-
-version: "3.8"
-
-services:
-  # --- Existing application services ---
-  # my-app:
-  #   image: ...
-
-  # --- Monitoring agents ---
-  promtail:
-    image: grafana/promtail:latest
-    container_name: promtail
-    volumes:
-      - /var/log:/var/log
-      - /var/lib/docker/containers:/var/lib/docker/containers:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./promtail:/etc/promtail
-    command: -config.file=/etc/promtail/promtail-config.yml
-    restart: unless-stopped
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    container_name: node-exporter
-    ports:
-      - "9100:9100"
-    pid: host
-    volumes:
-      - /:/host:ro,rslave
-    command: --path.rootfs=/host
-    restart: unless-stopped
-
-  cadvisor:
-    image: gcr.io/cadvisor/cadvisor:latest
-    container_name: cadvisor
-    ports:
-      - "8085:8080"
-    volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:rw
-      - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
-    restart: unless-stopped
-
-Promtail Configuration
-
-I created a promtail directory with a promtail-config.yml file to configure the log shipping destination.
-
-# ./promtail/promtail-config.yml
-server:
-  http_listen_port: 9080
-  grpc_listen_port: 0
-
-positions:
-  filename: /tmp/positions.yaml
-
-clients:
-  - url: http://<MONITORING_SERVER_IP>:3100/loki/api/v1/push
-
-I then ran docker-compose up -d to deploy the agents.
-
-Part 3: Establishing Secure Connectivity
-A common point of failure in distributed systems is firewall misconfiguration. I configured both the host-level (ufw) and network-level (cloud provider) firewalls to allow the necessary traffic between the two servers.
-
-On the Production Server (ufw):
-
-# Allow ingress from monitoring server for metric scraping
-sudo ufw allow from <MONITORING_SERVER_IP> to any port 9100 proto tcp comment 'Allow Prometheus Node Exporter'
-sudo ufw allow from <MONITORING_SERVER_IP> to any port 8085 proto tcp comment 'Allow Prometheus cAdvisor'
-sudo ufw reload
-
-On the Monitoring Server (ufw):
-
-# Allow ingress from production server for log ingestion
-sudo ufw allow from <PRODUCTION_SERVER_IP> to any port 3100 proto tcp comment 'Allow Loki Log Ingestion'
-sudo ufw reload
-
-Critically, I mirrored these rules in the respective cloud provider's network firewall console to ensure traffic was not dropped at the edge.
-
-Part 4: Securing Monitoring Endpoints
-The web interfaces for Prometheus, Grafana, and Uptime Kuma were now functional but publicly exposed. I implemented a reverse proxy using Caddy on the monitoring server to enforce authentication and provide automatic HTTPS.
-
-I installed Caddy on the monitoring server via its official OS package.
-
-I generated a secure, hashed password by running caddy hash-password.
-
-I configured the /etc/caddy/Caddyfile to proxy traffic and require authentication for sensitive endpoints, after pointing the relevant subdomains' DNS records to the monitoring server's IP.
-
-# Replace with your actual domains
-prometheus.yourdomain.com {
-    basic_auth {
-        admin <YOUR_HASHED_PASSWORD>
-    }
-    reverse_proxy localhost:9090
-}
-
-grafana.yourdomain.com {
-    reverse_proxy localhost:3000
-}
-
-uptime.yourdomain.com {
-    reverse_proxy localhost:3001
-}
-
-I reloaded the Caddy service (sudo systemctl reload caddy) and ensured the host firewall allowed HTTPS traffic (sudo ufw allow 443/tcp).
-
-The monitoring endpoints were now secured behind TLS and basic authentication.
-
-Part 5: Practical Application: A Root Cause Analysis Scenario
-The value of this system is best demonstrated with a practical incident response workflow.
-
-Alert: An automated alert from Uptime Kuma is received via Discord, indicating the primary application endpoint is unresponsive.
-
-Dashboard Triage: I navigate to the secure Grafana URL.
-
-Metric Analysis (The "What"): In the "Explore" view, using the Prometheus data source, I analyze key performance indicators. I observe a sharp increase in memory utilization beginning approximately 10 minutes prior to the alert.
-
-Log Analysis (The "Why"): I pivot to the Loki data source within the same Grafana interface, focusing on the time range of the memory spike. By filtering logs for the application container, I immediately identify a series of "Out of Memory" errors, which were preceded by application warnings related to a large data processing job.
-
-This methodical process, moving from alert to metric analysis to log inspection, allowed for a root cause diagnosis in minutes, all without requiring direct SSH access to the production host during the incident.
-
-Conclusion
-By architecting a decoupled monitoring stack, I successfully built an enterprise-grade, secure monitoring solution. This cost-effective and budget-friendly approach provides deep, historical insight into application and system health, empowering rapid incident response and proactive performance management. It is a foundational component for building and maintaining robust, reliable services.
-
-
+    <h3>Conclusion: Valuing Practical Skills in Tech</h3>
+    <p>In essence, being a web developer is about being a practical problem solver, a skilled artisan in the digital
+        realm. It's about knowing which tools to use and how to use them effectively to craft solutions that work. As the
+        tech industry evolves, this practical, real-world approach to development continues to be highly valued – a
+        reassuring fact for developers like me, who thrive on practicality and innovation, beyond the realms of algorithms
+        and theoretical knowledge.</p>
 </main>
 <footer>
     <nav>
