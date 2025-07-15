@@ -85,10 +85,19 @@ pre {
   overflow-x: auto;
   white-space: pre;
 }
+dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+}
 
-footer {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
-  font-size: 0.9rem;
+dt {
+  font-weight: 600;
+  grid-column: 1;
+}
+
+dd {
+  margin-left: 0;
+  grid-column: 2;
 }
