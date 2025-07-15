@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>
+      Building a Budget Friendly, Production-Ready Monitoring Stack | Pablo
+      Puyat
+    </title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Pablo Puyat" />
+    <meta
+      name="description"
+      content="Learn how to build a cost-effective, production-ready monitoring stack using Grafana, Prometheus, Loki, and Uptime Kuma. A comprehensive guide to self-hosted observability with secure architecture."
+    />
+    <meta
+      name="keywords"
+      content="monitoring stack, Grafana, Prometheus, Loki, Uptime Kuma, DevOps, observability, self-hosted monitoring, budget monitoring, production monitoring, system monitoring"
+    />
+    <link
+      rel="canonical"
+      href="https://ligaw.dev/budget-friendly-monitoring.html"
+    />
+    <meta
+      property="og:title"
+      content="Building a Budget Friendly, Production-Ready Monitoring Stack | Pablo Puyat"
+    />
+    <meta
+      property="og:description"
+      content="Learn how to build a cost-effective, production-ready monitoring stack using Grafana, Prometheus, Loki, and Uptime Kuma with secure architecture and proper isolation."
+    />
+    <meta
+      property="og:url"
+      content="https://ligaw.dev/budget-friendly-monitoring.html"
+    />
+    <meta
+      property="og:image"
+      content="https://bag.ligaw.dev/monitoring-stack-architecture.webp"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Budget-Friendly Monitoring Stack Architecture"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="article:author" content="Pablo Puyat" />
+    <meta property="article:section" content="DevOps" />
+    <meta property="article:tag" content="monitoring" />
+    <meta property="article:tag" content="DevOps" />
+    <meta property="article:tag" content="Grafana" />
+    <meta property="article:tag" content="Prometheus" />
+    <meta property="article:tag" content="observability" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/">Back</a>
+      </nav>
+    </header>
+    <main>
+      <h1>Building a Budget Friendly, Production-Ready Monitoring Stack</h1>
+      <p>
+        Before launching a new project, I make it a priority to have a robust
+        monitoring system in place. When an issue arises, having access to
+        searchable logs, historical metrics, and resource usage data makes my
+        life easier. For my latest project, I made a conscious decision to use a
+        dedicated server instead of a major cloud provider like AWS or GCP. A
+        decision made primarily for financial reasons. This approach meant I
+        wouldn't have access to managed monitoring tools. With third-party
+        services outside my budget, I set out to engineer a cost-effective and
+        budget-friendly replacement. This document details the architecture and
+        implementation of the powerful, self-hosted observability stack I built.
+      </p>
+
+      <h3>System Architecture for Resilient Monitoring</h3>
+      <p>
+        A key need, was that the monitoring server be separate from my
+        production server. This would be the largest cost driver, and I
+        considered using a raspberry pi or my Synology NAS as they would be the
+        most cost effective, but relying on my residential IScombined with the
+        spotty power issues (paying bills on time is a struggle) ruled that out.
+        Cloud providers to provide a free tier for smaller instance, but i dind
+        dealing with hosting providers like Linode, Digital Ocean, etc... about
+        the same cost wise without having to deal with overwhelming UI's that
+        AWS and Azure have.
+      </p>
+
+      <p>So here is my two-server model to guarantee fault tolerance:</p>
+      <ol>
+        <li>
+          The Production Server: This machine is dedicated to running the core
+          application. It is instrumented with lightweight, efficient data
+          shippers that export telemetry with minimal performance overhead.
+        </li>
+        <li>
+          The Monitoring Server: This is a dedicated machine that runs the core
+          data aggregation, storage, and visualization stack.
+        </li>
+      </ol>
+      <p>
+        For the monitoring server, I selected a small cloud VPS. This approach
+        provides a highly available, professionally managed environment that
+        avoids the unreliability of residential ISPs and power, while remaining
+        exceptionally cost-effective. This architecture not only ensures robust
+        monitoring for the current project but also establishes a scalable
+        foundation that could be extended to monitor a fleet of services or even
+        evolve into a managed monitoring solution.
+      </p>
+
+      <h3>Part 1: Deploying the Core Monitoring Stack</h3>
+      <p>
+        The monitoring server is the centralized hub of the operation. After
+        provisioning a small VM, I installed Docker and Docker Compose and
+        deployed the core stack using the following configuration.
+      </p>
+
+      <p>docker-compose.yml for the Monitoring Server</p>
+
+      <p>
+        This file orchestrates the primary services: Grafana for data
+        visualization, Loki for log aggregation, Prometheus for time-series
+        metrics, and Uptime Kuma for external uptime checks.
+      </p>
+
+      <pre>
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "3100:3100"
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command: --config.file=/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime-kuma-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  grafana-data: {}
+  prometheus-data: {}
+  uptime-kuma-data: {}
+</pre
+      >
+      <h3>Prometheus Configuration</h3>
+
+      <p>
+        I created a prometheus directory containing a prometheus.yml file to
+        define the scrape targets on the production server.
+      </p>
+
+      <pre>
+
+# ./prometheus/prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['&lt;PRODUCTION_SERVER_IP&gt;:9100']
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['&lt;PRODUCTION_SERVER_IP&gt;:8085']
+
+</pre
+      >
+
+      <p>With a docker-compose up -d, the monitoring server was operational.</p>
+
+      <h3>Part 2: Instrumenting the Production Server</h3>
+      <p>
+        On the production server, I deployed a lean Docker Compose configuration
+        containing only the necessary data shippers.
+      </p>
+      <ul>
+        <li>Node Exporter: Exposes host-level system metrics.</li>
+
+        <li>cAdvisor: Exposes container-level performance metrics.</li>
+
+        <li>
+          Promtail: The log collection agent that forwards container and system
+          logs to Loki.
+        </li>
+      </ul>
+      <p>docker-compose.yml for the Production Server</p>
+
+      <pre>
+services:
+  # --- Existing application services ---
+  # my-app:
+  #   image: ...
+
+  # --- Monitoring agents ---
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - /var/log:/var/log
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./promtail:/etc/promtail
+    command: -config.file=/etc/promtail/promtail-config.yml
+    restart: unless-stopped
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    pid: host
+    volumes:
+      - /:/host:ro,rslave
+    command: --path.rootfs=/host
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+      - "8085:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
+</pre
+      >
+      <h4>Promtail Configuration</h4>
+
+      <p>
+        I created a promtail directory with a promtail-config.yml file to
+        configure the log shipping destination.
+      </p>
+
+      <pre>
+# ./promtail/promtail-config.yml
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://&lt;MONITORING_SERVER_IP&gt;:3100/loki/api/v1/push
+</pre
+      >
+
+      <p>I then ran docker-compose up -d to deploy the agents.</p>
+
+      <h3>Part 3: Establishing Secure Connectivity</h3>
+      <p>
+        A common point of failure in distributed systems is firewall
+        misconfiguration. I configured both the host-level (ufw) and
+        network-level (cloud provider) firewalls to allow the necessary traffic
+        between the two servers.
+      </p>
+
+      <h4>On the Production Server (ufw):</h4>
+
+      <pre>
+# Allow ingress from monitoring server for metric scraping
+sudo ufw allow from &lt;MONITORING_SERVER_IP&gt; to any port 9100 proto tcp comment 'Allow Prometheus Node Exporter'
+sudo ufw allow from &lt;MONITORING_SERVER_IP&gt; to any port 8085 proto tcp comment 'Allow Prometheus cAdvisor'
+sudo ufw reload
+</pre
+      >
+
+      <h4>On the Monitoring Server (ufw):</h4>
+
+      <pre>
+# Allow ingress from production server for log ingestion
+sudo ufw allow from &lt;PRODUCTION_SERVER_IP&gt; to any port 3100 proto tcp comment 'Allow Loki Log Ingestion'
+sudo ufw reload 
+          </pre
+      >
+
+      <p>
+        Critically, I mirrored these rules in the respective cloud provider's
+        network firewall console to ensure traffic was not dropped at the edge.
+      </p>
+
+      <h3>Part 4: Securing Monitoring Endpoints</h3>
+      <p>
+        The web interfaces for Prometheus, Grafana, and Uptime Kuma were now
+        functional but publicly exposed. I implemented a reverse proxy using
+        Caddy on the monitoring server to enforce authentication and provide
+        automatic HTTPS.
+      </p>
+
+      <ol>
+        <li>I installed Caddy on the monitoring server.</li>
+
+        <li>
+          I generated a secure, hashed password by running caddy hash-password.
+        </li>
+
+        <li>
+          I configured the /etc/caddy/Caddyfile to proxy traffic and require
+          authentication for sensitive endpoints, after pointing the relevant
+          subdomains' DNS records to the monitoring server's IP.
+        </li>
+
+        <pre>
+prometheus.yourdomain.com {
+    basic_auth {
+        admin &lt;YOUR_HASHED_PASSWORD&gt;
+    }
+    reverse_proxy localhost:9090
+}
+
+grafana.yourdomain.com {
+    reverse_proxy localhost:3000
+}
+
+uptime.yourdomain.com {
+    reverse_proxy localhost:3001
+}
+                  </pre
+        >
+        <li>
+          I reloaded the Caddy service (sudo systemctl reload caddy) and ensured
+          the host firewall allowed HTTPS traffic (sudo ufw allow 443/tcp).
+        </li>
+      </ol>
+      <p>
+        The monitoring endpoints were now secured behind TLS and basic
+        authentication.
+      </p>
+    </main>
+    <footer>
+      <nav>
+        <a href="/">Back</a>
+      </nav>
+    </footer>
+  </body>
+</html>

@@ -5,15 +5,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Pablo Puyat" />
-    <meta name="description" content="A personal account of setting up Sentry release tagging with a Makefile to automate error resolution. A practical guide for independent developers." />
+    <meta
+      name="description"
+      content="A personal account of setting up Sentry release tagging with a Makefile to automate error resolution. A practical guide for independent developers."
+    />
     <meta property="og:title" content="How I Set Up Sentry Release Tagging" />
-    <meta property="og:description" content="A personal account of setting up Sentry release tagging with a Makefile to automate error resolution. A practical guide for independent developers." />
+    <meta
+      property="og:description"
+      content="A personal account of setting up Sentry release tagging with a Makefile to automate error resolution. A practical guide for independent developers."
+    />
     <meta property="og:url" content="/how-i-setup-sentry-releases.html" />
     <meta property="og:site_name" content="ligaw.dev" />
     <meta property="og:image" content="https://ligaw.dev/pablopuyat.webp" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="How I Set Up Sentry Release Tagging" />
+    <meta
+      property="og:image:alt"
+      content="How I Set Up Sentry Release Tagging"
+    />
     <meta property="og:type" content="article" />
     <meta property="og:locale" content="en_US" />
     <meta property="article:author" content="Pablo Puyat" />
@@ -21,52 +30,110 @@
     <meta property="article:tag" content="Sentry" />
     <meta property="article:tag" content="release tagging" />
     <meta property="article:tag" content="error tracking" />
-    <link rel="canonical" href="https://ligaw.dev/how-i-setup-sentry-releases.html" />
+    <link
+      rel="canonical"
+      href="https://ligaw.dev/how-i-setup-sentry-releases.html"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main>
       <h1>A Productive Workflow for the Independent Developer</h1>
-      <p>As an independent developer, focused time is the most valuable resource. Juggling features, bugs, and project management drains productivity. This tool-driven workflow provides structure without administrative overhead.</p>
-      <p>This process uses GitHub and Sentry to track issues and handle production errors efficiently. It's a cost-effective system for producing quality work.</p>
+      <p>
+        As an independent developer, focused time is the most valuable resource.
+        Juggling features, bugs, and project management drains productivity.
+        This tool-driven workflow provides structure without administrative
+        overhead.
+      </p>
+      <p>
+        This process uses GitHub and Sentry to track issues and handle
+        production errors efficiently. It's a cost-effective system for
+        producing quality work.
+      </p>
 
       <h2>Development Loop: Idea to Production</h2>
-      <p>This cycle covers all planned work, ensuring every change is deliberate and tracked.</p>
+      <p>
+        This cycle covers all planned work, ensuring every change is deliberate
+        and tracked.
+      </p>
       <ul>
         <li>
           <h3>1. Task Capture (GitHub Issues)</h3>
-          <p>All work begins as a GitHub Issue. This creates a centralized backlog without detailed specifications. Capturing an idea with a title (e.g., feat: Add user profile page) takes seconds and clears mental overhead, allowing focus to return to the current task.</p>
+          <p>
+            All work begins as a GitHub Issue. This creates a centralized
+            backlog without detailed specifications. Capturing an idea with a
+            title (e.g., feat: Add user profile page) takes seconds and clears
+            mental overhead, allowing focus to return to the current task.
+          </p>
         </li>
         <li>
           <h3>2. Execution (Branching)</h3>
-          <p>All work is done on a dedicated branch from main. This isolates changes, protects the main codebase, and links the work to its issue (e.g., 42/add-profile-page).</p>
+          <p>
+            All work is done on a dedicated branch from main. This isolates
+            changes, protects the main codebase, and links the work to its issue
+            (e.g., 42/add-profile-page).
+          </p>
         </li>
         <li>
           <h3>3. Merging and Automation (Squash and Merge)</h3>
-          <p>When work is complete, a Pull Request is opened. Using "Squash and Merge" condenses all changes into a single commit on the main branch.</p>
-          <p>The commit message includes a keyword (e.g., Fixes #42) to automatically close the GitHub Issue. This maintains a clean project history and automates the final step.</p>
+          <p>
+            When work is complete, a Pull Request is opened. Using "Squash and
+            Merge" condenses all changes into a single commit on the main
+            branch.
+          </p>
+          <p>
+            The commit message includes a keyword (e.g., Fixes #42) to
+            automatically close the GitHub Issue. This maintains a clean project
+            history and automates the final step.
+          </p>
         </li>
-        </ul>
-          <h2>Error Management: Alert to Resolution</h2>
-          <p>Unplanned work, like production errors, requires a structured process to avoid derailing development.</p>
+      </ul>
+      <h2>Error Management: Alert to Resolution</h2>
+      <p>
+        Unplanned work, like production errors, requires a structured process to
+        avoid derailing development.
+      </p>
       <ul>
         <li>
           <h3>1. Triage and Delegate (Sentry to GitHub)</h3>
-          <p>When Sentry reports a production error, assess its impact. If it's a real bug, convert it to a GitHub Issue directly from Sentry with one click. This moves the error and its technical context into the backlog. Archive the Sentry alert to keep the inbox clean.</p>
+          <p>
+            When Sentry reports a production error, assess its impact. If it's a
+            real bug, convert it to a GitHub Issue directly from Sentry with one
+            click. This moves the error and its technical context into the
+            backlog. Archive the Sentry alert to keep the inbox clean.
+          </p>
         </li>
         <li>
           <h3>2. Automated Resolution (Sentry Releases)</h3>
-          <p>The bug is then handled using the core development loop. The key is using "Releases." Every deployment is tagged with a unique identifier (like a git commit hash).</p>
-          <p>When the fix is deployed, Sentry detects the new release. Since the Sentry alert was linked to the GitHub Issue, Sentry automatically marks the error as resolved. This closes the loop without manual intervention.</p>
+          <p>
+            The bug is then handled using the core development loop. The key is
+            using "Releases." Every deployment is tagged with a unique
+            identifier (like a git commit hash).
+          </p>
+          <p>
+            When the fix is deployed, Sentry detects the new release. Since the
+            Sentry alert was linked to the GitHub Issue, Sentry automatically
+            marks the error as resolved. This closes the loop without manual
+            intervention.
+          </p>
         </li>
       </ul>
       <h2>Automation Setup</h2>
       <p>This workflow is powered by a one-time configuration:</p>
       <ul>
-        <li>GitHub & Sentry Integration: Install the Sentry application on the GitHub repository to allow communication.</li>
-        <li>Release Tagging: Modify the deployment script to pass a release identifier (e.g., a git hash) to the Sentry SDK on initialization.</li>
+        <li>
+          GitHub & Sentry Integration: Install the Sentry application on the
+          GitHub repository to allow communication.
+        </li>
+        <li>
+          Release Tagging: Modify the deployment script to pass a release
+          identifier (e.g., a git hash) to the Sentry SDK on initialization.
+        </li>
       </ul>
-      <p>This setup enables a highly automated workflow, providing a clear link between code, features, and resolved errors.</p>
+      <p>
+        This setup enables a highly automated workflow, providing a clear link
+        between code, features, and resolved errors.
+      </p>
     </main>
   </body>
 </html>
