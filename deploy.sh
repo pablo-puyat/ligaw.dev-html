@@ -1,2 +1,2 @@
 #!/bin/bash
-rsync -ravz --exclude=.git --exclude=.idea --exclude=deploy.sh . matt:/var/www/vhosts/ligaw.dev/httpdocs
+rsync -ravz --exclude=.git --exclude=deploy.sh --delete . /var/www/vhosts/ligaw.dev/httpdocs
